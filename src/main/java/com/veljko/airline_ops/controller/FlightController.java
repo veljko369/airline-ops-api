@@ -1,5 +1,6 @@
 package com.veljko.airline_ops.controller;
 
+import com.veljko.airline_ops.dto.CreateFlightRequest;
 import com.veljko.airline_ops.dto.UpdateFlightStatusRequest;
 import com.veljko.airline_ops.dto.UpdateGateRequest;
 import com.veljko.airline_ops.dto.UpdateWeightBalanceRequest;
@@ -7,7 +8,6 @@ import com.veljko.airline_ops.model.Flight;
 import com.veljko.airline_ops.model.FlightStatus;
 import com.veljko.airline_ops.service.FlightService;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -27,8 +27,8 @@ public class FlightController {
     }
 
     @PostMapping
-    public Flight createFlight(@RequestBody Flight flight) {
-        return flightService.createFlight(flight);
+    public Flight createFlight(@RequestBody CreateFlightRequest request) {
+        return flightService.createFlight(request);
     }
 
     @PostMapping("/{id}/status")
@@ -40,22 +40,46 @@ public class FlightController {
 
     @PostMapping("/{id}/gate")
     public Flight updateFlightGate(@PathVariable Long id,
-                                   @RequestBody UpdateGateRequest request){
+                                   @RequestBody UpdateGateRequest request) {
         String newGate = request.getGate();
-        return flightService.updateGate(id,newGate);
+        return flightService.updateGate(id, newGate);
     }
 
     @PostMapping("/{id}/weight-balance")
     public Flight updateWeightBalance(@PathVariable Long id,
-                                      @RequestBody UpdateWeightBalanceRequest request){
+                                      @RequestBody UpdateWeightBalanceRequest request) {
         Integer newPlannedPayloadKg = request.getPlannedPayloadKg();
         Integer newActualPayloadKg = request.getActualPayloadKg();
         Integer newFuelKg = request.getFuelKg();
 
-        return flightService.updateWeightBalance(id,newPlannedPayloadKg,newActualPayloadKg,newFuelKg);
+        return flightService.updateWeightBalance(id, newPlannedPayloadKg, newActualPayloadKg, newFuelKg);
 
 
     }
+
+    @GetMapping("/status/{status}")
+    public List<Flight> getFlightsByStatus(@PathVariable FlightStatus status) {
+        return flightService.getFlightsByStatus(status);
+    }
+
+    @GetMapping("/origin/{origin}")
+    public List<Flight> getFlightsByOrigin(@PathVariable String origin) {
+        return flightService.getFlightsByOrigin(origin);
+    }
+
+    @GetMapping("/destination/{destination}")
+    public List<Flight> getFlightsByDestination(@PathVariable String destination) {
+        return flightService.getFlightsByDestination(destination);
+    }
+
+
+
+
+
+
+
+
+
 
 
 

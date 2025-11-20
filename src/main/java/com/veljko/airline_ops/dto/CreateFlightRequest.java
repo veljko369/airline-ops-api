@@ -1,48 +1,28 @@
-package com.veljko.airline_ops.model;
+package com.veljko.airline_ops.dto;
 
-import jakarta.persistence.*;
+import com.veljko.airline_ops.model.FlightStatus;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "flights")
-public class Flight {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CreateFlightRequest {
 
     private String flightNumber;
     private String origin;
     private String destination;
-
     private LocalDateTime scheduledDeparture;
     private LocalDateTime scheduledArrival;
-
-    @Enumerated(EnumType.STRING)
     private FlightStatus status;
-
     private String gate;
-
-    @ManyToOne
-    @JoinColumn(name = "aircraft_id")
-    private Aircraft aircraft;
-
-    //weight and balance
+    private Long aircraftId;
     private Integer plannedPayloadKg;
     private Integer actualPayloadKg;
     private Integer fuelKg;
 
-    public Flight() {
+
+    public CreateFlightRequest(){
+
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFlightNumber() {
         return flightNumber;
@@ -100,6 +80,13 @@ public class Flight {
         this.gate = gate;
     }
 
+    public Long getAircraftId() {
+        return aircraftId;
+    }
+
+    public void setAircraftId(Long aircraftId) {
+        this.aircraftId = aircraftId;
+    }
 
     public Integer getPlannedPayloadKg() {
         return plannedPayloadKg;
@@ -123,13 +110,5 @@ public class Flight {
 
     public void setFuelKg(Integer fuelKg) {
         this.fuelKg = fuelKg;
-    }
-
-    public Aircraft getAircraft() {
-        return aircraft;
-    }
-
-    public void setAircraft(Aircraft aircraft) {
-        this.aircraft = aircraft;
     }
 }

@@ -158,8 +158,8 @@ The project helps me practice:
 
 ## Author
 
-**Veljko Mihajlović**
-Java Backend Developer (in progress)
+**Veljko Mihajlović**  
+Java Backend Developer (in progress)  
 Air Traffic Engineer transitioning into IT
 
 ---

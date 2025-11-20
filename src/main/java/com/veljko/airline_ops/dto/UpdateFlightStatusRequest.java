@@ -6,10 +6,10 @@ public class UpdateFlightStatusRequest {
 
     private FlightStatus status;
 
-    public UpdateFlightStatusRequest(){
+    public UpdateFlightStatusRequest() {
     }
 
-    public FlightStatus getStatus(){
+    public FlightStatus getStatus() {
         return status;
     }
 
