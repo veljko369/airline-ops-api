@@ -1,0 +1,63 @@
+package com.veljko.airline_ops.controller;
+
+import com.veljko.airline_ops.dto.UpdateFlightStatusRequest;
+import com.veljko.airline_ops.dto.UpdateGateRequest;
+import com.veljko.airline_ops.dto.UpdateWeightBalanceRequest;
+import com.veljko.airline_ops.model.Flight;
+import com.veljko.airline_ops.model.FlightStatus;
+import com.veljko.airline_ops.service.FlightService;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/flights")
+public class FlightController {
+
+    private final FlightService flightService;
+
+    public FlightController(FlightService flightService) {
+        this.flightService = flightService;
+    }
+
+    @GetMapping
+    public List<Flight> getAllFlights() {
+        return flightService.getAllFlights();
+    }
+
+    @PostMapping
+    public Flight createFlight(@RequestBody Flight flight) {
+        return flightService.createFlight(flight);
+    }
+
+    @PostMapping("/{id}/status")
+    public Flight updateFlightStatus(@PathVariable Long id,
+                                     @RequestBody UpdateFlightStatusRequest request) {
+        FlightStatus newStatus = request.getStatus();
+        return flightService.updateStatus(id, newStatus);
+    }
+
+    @PostMapping("/{id}/gate")
+    public Flight updateFlightGate(@PathVariable Long id,
+                                   @RequestBody UpdateGateRequest request){
+        String newGate = request.getGate();
+        return flightService.updateGate(id,newGate);
+    }
+
+    @PostMapping("/{id}/weight-balance")
+    public Flight updateWeightBalance(@PathVariable Long id,
+                                      @RequestBody UpdateWeightBalanceRequest request){
+        Integer newPlannedPayloadKg = request.getPlannedPayloadKg();
+        Integer newActualPayloadKg = request.getActualPayloadKg();
+        Integer newFuelKg = request.getFuelKg();
+
+        return flightService.updateWeightBalance(id,newPlannedPayloadKg,newActualPayloadKg,newFuelKg);
+
+
+    }
+
+
+
+
+}
