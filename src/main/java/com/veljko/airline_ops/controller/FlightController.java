@@ -72,16 +72,10 @@ public class FlightController {
         return flightService.getFlightsByDestination(destination);
     }
 
-
-
-
-
-
-
-
-
-
-
+    @GetMapping("/aircraft/{aircraftId}")
+    public List<Flight> getFlightsByAircraft(@PathVariable Long aircraftId) {
+        return flightService.getFlightsByAircraft(aircraftId);
+    }
 
 
 }

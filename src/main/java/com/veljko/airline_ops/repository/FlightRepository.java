@@ -16,6 +16,8 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     List<Flight> findByDestinationIgnoreCase(String destination);
 
+    List<Flight> findByAircraftId(Long aircraftId);
+
 }
 
 

@@ -3,7 +3,7 @@ package com.veljko.airline_ops.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "airtcaft")
+@Table(name = "aircraft")
 public class Aircraft {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -135,5 +135,8 @@ public class FlightService {
         return flightRepository.findByDestinationIgnoreCase(destination);
     }
 
+    public List<Flight> getFlightsByAircraft(Long id){
+        return flightRepository.findByAircraftId(id);
+    }
 
 }
