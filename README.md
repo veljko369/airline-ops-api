@@ -1,71 +1,78 @@
 
 # Airline Operations API
 
-This is a backend project I am building while learning Java backend development.
-The goal is to simulate a simple version of real airline operations systems (OCC, dispatch, gate coordination, etc).
+A backend REST API that models a simplified airline operations system, inspired by real OCC/dispatch workflows.  
+Built with **Java 21**, **Spring Boot**, **Spring Data JPA**, and **H2**.
 
-The API allows basic operations on flights: creating flights, updating status, updating gate information, and updating weight & balance data.
+The goal of this project is to demonstrate clean backend architecture, CRUD operations, DTO patterns, entity relationships, and domain-driven modeling using realistic aviation concepts.
+
+---
+
+## Features
+
+- CRUD for **Flights**, **Aircraft**, and **Airports**
+- **Assigning Aircraft to Flights** (Many-to-One)
+- **Flight status updates** (SCHEDULED, BOARDING, DELAYED, etc.)
+- **Gate assignment updates**
+- **Weight & Balance updates** (planned payload, actual payload, fuel)
+- **Filtering flights** by:
+  - status  
+  - origin  
+  - destination  
+  - aircraft  
+- Search flights by **aircraftId**
+- Clean layered architecture:
+  - Controller → Service → Repository
+  - DTOs for request models
+
+---
+
+## Why Aviation Domain?
+
+My background is in air-traffic engineering, so instead of building a generic CRUD demo,  
+I wanted to model something close to real airline operations:
+
+- flight scheduling  
+- gate management  
+- aircraft assignment  
+- payload / fuel updates  
+- airport catalog  
+- dispatch/OCC workflows  
+
+This combines my previous aviation knowledge with modern backend development using Java/Spring Boot.
 
 ---
 
 ## Tech Stack
 
-* Java 17
-* Spring Boot
-* Spring Web
-* Spring Data JPA
-* H2 Database (in-memory)
-* Maven
+- **Java 21**
+- **Spring Boot 3.5.7**
+- **Spring Web (REST)**
+- **Spring Data JPA**
+- **H2 in-memory database**
+- **Maven**
+- (Swagger planned in next version)
 
 ---
 
-## How to Run
+## Quick Demo
 
-1. Install Java 17+
-2. Install Maven
-3. Clone the repository:
+### 1. Create an Aircraft
+`POST /api/aircraft`
 
-```
-git clone https://github.com/veljko369/airline-ops-api.git
-          
-```
+```json
+{
+  "registration": "YU-APH",
+  "type": "A320",
+  "manufacturer": "Airbus",
+  "seatingCapacity": 180,
+  "maxTakeoffWeightKg": 73500
+}
+````
 
-4. Start the application:
+### 2. Create a Flight (assign aircraft via aircraftId)
 
-```
-mvn spring-boot:run
-```
-
-The API will run on:
-`http://localhost:8080`
-
----
-
-## Endpoints
-
-### **Health Check**
-
-```
-GET /api/health
-```
-
----
-
-### **Get All Flights**
-
-```
-GET /api/flights
-```
-
----
-
-### **Create Flight**
-
-```
-POST /api/flights
-```
-
-Example request:
+`POST /api/flights`
 
 ```json
 {
@@ -76,90 +83,96 @@ Example request:
   "scheduledArrival": "2025-11-20T10:45:00",
   "status": "SCHEDULED",
   "gate": "A4",
-  "aircraftType": "A320"
-}
-```
-
----
-
-### **Update Flight Status**
-
-```
-POST /api/flights/{id}/status
-```
-
-Example:
-
-```json
-{
-  "status": "DELAYED"
-}
-```
-
----
-
-### **Update Gate**
-
-```
-POST /api/flights/{id}/gate
-```
-
-Example:
-
-```json
-{
-  "gate": "C7"
-}
-```
-
----
-
-### **Update Weight & Balance**
-
-```
-POST /api/flights/{id}/weight-balance
-```
-
-Example:
-
-```json
-{
+  "aircraftId": 1,
   "plannedPayloadKg": 8000,
-  "actualPayloadKg": 8600,
-  "fuelKg": 5300
+  "actualPayloadKg": 7800,
+  "fuelKg": 5200
 }
+```
+
+### 3. Get all flights
+
+`GET /api/flights`
+
+### 4. Filter flights by status
+
+`GET /api/flights/status/DELAYED`
+
+### 5. Find flights using a specific aircraft
+
+`GET /api/flights/aircraft/1`
+
+---
+
+## API Structure
+
+```
+src/main/java/com/veljko/airline_ops/
+│
+├── controller/
+│   ├── FlightController.java
+│   ├── AircraftController.java
+│   └── AirportController.java
+│
+├── dto/
+│   ├── CreateFlightRequest.java
+│   ├── UpdateFlightStatusRequest.java
+│   ├── UpdateGateRequest.java
+│   └── UpdateWeightBalanceRequest.java
+│
+├── model/
+│   ├── Flight.java
+│   ├── FlightStatus.java
+│   ├── Aircraft.java
+│   └── Airport.java
+│
+├── repository/
+├── service/
+└── AirlineOpsApplication.java
 ```
 
 ---
 
-## About the Project
+## Planned Next Steps
 
-This project is part of my learning path as I transition into backend development.
-I chose the aviation domain because of my background in air traffic engineering and my interest in airline operations.
-The project helps me practice:
-
-* Spring Boot
-* REST API design
-* Basic backend architecture
-* Working with a database using JPA
-* Structuring code (Controller → Service → Repository)
+* Add Swagger / OpenAPI documentation
+* Add validation (`@NotBlank`, `@Positive`, etc.)
+* Add Airport → Flight relationship (origin/destination as entities)
+* Add basic CI pipeline (GitHub Actions)
+* Optional: Dockerfile
 
 ---
 
-## Planned Improvements
+## Running the Project
 
-* Filter flights by status, origin, destination
-* Add Aircraft entity
-* Add flight history
-* Add Swagger/OpenAPI documentation
-* Add authentication (JWT)
+### 1. Clone the repo
+
+```
+git clone https://github.com/<your-username>/airline-ops-api.git
+```
+
+### 2. Run with Maven
+
+```
+mvn spring-boot:run
+```
+
+App starts on:
+`http://localhost:8080`
+
+---
+
+## Contact
+
+Created as part of my transition from air-traffic engineering to Java backend development.
+Feel free to open issues or send suggestions.
 
 ---
 
 ## Author
-
-**Veljko Mihajlović**  
+Veljko Mihajlović  
 Java Backend Developer (in progress)  
 Air Traffic Engineer transitioning into IT
 
 ---
+
