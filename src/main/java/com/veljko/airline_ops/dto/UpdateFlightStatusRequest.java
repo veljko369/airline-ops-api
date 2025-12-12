@@ -1,9 +1,10 @@
 package com.veljko.airline_ops.dto;
 
 import com.veljko.airline_ops.model.FlightStatus;
+import jakarta.validation.constraints.NotNull;
 
 public class UpdateFlightStatusRequest {
-
+    @NotNull(message = "Status is required")
     private FlightStatus status;
 
     public UpdateFlightStatusRequest() {

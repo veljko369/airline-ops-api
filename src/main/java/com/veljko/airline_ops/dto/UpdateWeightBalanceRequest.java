@@ -1,9 +1,16 @@
 package com.veljko.airline_ops.dto;
 
+import jakarta.validation.constraints.PositiveOrZero;
+
 public class UpdateWeightBalanceRequest {
 
+    @PositiveOrZero(message = "Planned payload must be >= 0")
     private Integer plannedPayloadKg;
+
+    @PositiveOrZero(message = "Actual payload must be >= 0")
     private Integer actualPayloadKg;
+
+    @PositiveOrZero(message = "Fuel must be >= 0")
     private Integer fuelKg;
 
     public UpdateWeightBalanceRequest(){

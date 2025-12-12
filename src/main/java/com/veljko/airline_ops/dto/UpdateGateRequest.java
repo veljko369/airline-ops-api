@@ -1,7 +1,9 @@
 package com.veljko.airline_ops.dto;
 
-public class UpdateGateRequest {
+import jakarta.validation.constraints.NotBlank;
 
+public class UpdateGateRequest {
+    @NotBlank(message = "Gate cannot be empty")
     private String gate;
 
     public UpdateGateRequest() {

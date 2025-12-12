@@ -1,6 +1,7 @@
 package com.veljko.airline_ops.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "airports")
@@ -9,9 +10,16 @@ public class Airport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String code;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String city;
+
+    @NotBlank
     private String country;
 
     private Airport() {

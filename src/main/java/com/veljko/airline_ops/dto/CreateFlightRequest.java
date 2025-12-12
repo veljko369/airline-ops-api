@@ -1,22 +1,44 @@
 package com.veljko.airline_ops.dto;
 
 import com.veljko.airline_ops.model.FlightStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDateTime;
 
 public class CreateFlightRequest {
 
+    @NotBlank(message = "Flight number is required")
     private String flightNumber;
+
+    @NotBlank(message = "Origin airport code is required")
     private String origin;
+
+    @NotBlank(message = "Destination airport code is required")
     private String destination;
+
+    @NotNull(message = "Scheduled departure time is required")
     private LocalDateTime scheduledDeparture;
+
+    @NotNull(message = "Scheduled arrival time is required")
     private LocalDateTime scheduledArrival;
-    private FlightStatus status;
-    private String gate;
+
+    @NotNull(message = "Aircraft ID is required")
     private Long aircraftId;
+
+    @PositiveOrZero(message = "Planned payload must be >= 0")
     private Integer plannedPayloadKg;
+
+    @PositiveOrZero(message = "Actual payload must be >= 0")
     private Integer actualPayloadKg;
+
+    @PositiveOrZero(message = "Fuel amount must be >= 0")
     private Integer fuelKg;
+
+    private FlightStatus status;
+
+    private String gate;
 
 
     public CreateFlightRequest(){

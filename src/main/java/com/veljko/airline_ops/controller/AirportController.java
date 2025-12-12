@@ -2,6 +2,7 @@ package com.veljko.airline_ops.controller;
 
 import com.veljko.airline_ops.model.Airport;
 import com.veljko.airline_ops.service.AirportService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class AirportController {
     }
 
     @PostMapping
-    public Airport createAirport(@RequestBody Airport airport){
+    public Airport createAirport(@Valid @RequestBody Airport airport){
         return airportService.createAirport(airport);
     }
 

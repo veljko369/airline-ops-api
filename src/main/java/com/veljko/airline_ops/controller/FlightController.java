@@ -7,6 +7,7 @@ import com.veljko.airline_ops.dto.UpdateWeightBalanceRequest;
 import com.veljko.airline_ops.model.Flight;
 import com.veljko.airline_ops.model.FlightStatus;
 import com.veljko.airline_ops.service.FlightService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,27 +28,27 @@ public class FlightController {
     }
 
     @PostMapping
-    public Flight createFlight(@RequestBody CreateFlightRequest request) {
+    public Flight createFlight(@Valid @RequestBody CreateFlightRequest request) {
         return flightService.createFlight(request);
     }
 
     @PostMapping("/{id}/status")
     public Flight updateFlightStatus(@PathVariable Long id,
-                                     @RequestBody UpdateFlightStatusRequest request) {
+                                     @Valid @RequestBody UpdateFlightStatusRequest request) {
         FlightStatus newStatus = request.getStatus();
         return flightService.updateStatus(id, newStatus);
     }
 
     @PostMapping("/{id}/gate")
     public Flight updateFlightGate(@PathVariable Long id,
-                                   @RequestBody UpdateGateRequest request) {
+                                   @Valid @RequestBody UpdateGateRequest request) {
         String newGate = request.getGate();
         return flightService.updateGate(id, newGate);
     }
 
     @PostMapping("/{id}/weight-balance")
     public Flight updateWeightBalance(@PathVariable Long id,
-                                      @RequestBody UpdateWeightBalanceRequest request) {
+                                      @Valid @RequestBody UpdateWeightBalanceRequest request) {
         Integer newPlannedPayloadKg = request.getPlannedPayloadKg();
         Integer newActualPayloadKg = request.getActualPayloadKg();
         Integer newFuelKg = request.getFuelKg();
