@@ -12,11 +12,11 @@ public class CreateFlightRequest {
     @NotBlank(message = "Flight number is required")
     private String flightNumber;
 
-    @NotBlank(message = "Origin airport code is required")
-    private String origin;
+    @NotNull(message = "Origin airport ID is required")
+    private Long originAirportId;
 
-    @NotBlank(message = "Destination airport code is required")
-    private String destination;
+    @NotNull(message = "Destination airport ID is required")
+    private Long destinationAirportId;
 
     @NotNull(message = "Scheduled departure time is required")
     private LocalDateTime scheduledDeparture;
@@ -54,20 +54,20 @@ public class CreateFlightRequest {
         this.flightNumber = flightNumber;
     }
 
-    public String getOrigin() {
-        return origin;
+    public Long getOriginAirportId() {
+        return originAirportId;
     }
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
+    public void setOriginAirportId(Long originAirportId) {
+        this.originAirportId = originAirportId;
     }
 
-    public String getDestination() {
-        return destination;
+    public Long getDestinationAirportId() {
+        return destinationAirportId;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setDestinationAirportId(Long destinationAirportId) {
+        this.destinationAirportId = destinationAirportId;
     }
 
     public LocalDateTime getScheduledDeparture() {

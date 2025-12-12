@@ -13,8 +13,6 @@ public class Flight {
     private Long id;
 
     private String flightNumber;
-    private String origin;
-    private String destination;
 
     private LocalDateTime scheduledDeparture;
     private LocalDateTime scheduledArrival;
@@ -27,6 +25,14 @@ public class Flight {
     @ManyToOne
     @JoinColumn(name = "aircraft_id")
     private Aircraft aircraft;
+
+    @ManyToOne
+    @JoinColumn(name = "origin_airport_id")
+    private Airport originAirport;
+
+    @ManyToOne
+    @JoinColumn(name = "destination_airport_id")
+    private Airport destinationAirport;
 
     //weight and balance
     private Integer plannedPayloadKg;
@@ -50,22 +56,6 @@ public class Flight {
 
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
-    }
-
-    public String getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     public LocalDateTime getScheduledDeparture() {
@@ -131,5 +121,21 @@ public class Flight {
 
     public void setAircraft(Aircraft aircraft) {
         this.aircraft = aircraft;
+    }
+
+    public Airport getOriginAirport() {
+        return originAirport;
+    }
+
+    public void setOriginAirport(Airport originAirport) {
+        this.originAirport = originAirport;
+    }
+
+    public Airport getDestinationAirport() {
+        return destinationAirport;
+    }
+
+    public void setDestinationAirport(Airport destinationAirport) {
+        this.destinationAirport = destinationAirport;
     }
 }

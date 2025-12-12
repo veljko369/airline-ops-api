@@ -77,8 +77,8 @@ This combines my previous aviation knowledge with modern backend development usi
 ```json
 {
   "flightNumber": "JU540",
-  "origin": "BEG",
-  "destination": "LHR",
+  "originAirportId": 1,
+  "destinationAirportId": 2,
   "scheduledDeparture": "2025-11-20T08:30:00",
   "scheduledArrival": "2025-11-20T10:45:00",
   "status": "SCHEDULED",
@@ -103,7 +103,17 @@ This combines my previous aviation knowledge with modern backend development usi
 `GET /api/flights/aircraft/1`
 
 ---
+## Swagger / OpenAPI
 
+Interactive API documentation is available via Swagger UI:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+Swagger exposes all endpoints, request models, validation rules, and allows testing the API directly from the browser.
+
+---
 ## API Structure
 
 ```
@@ -135,9 +145,6 @@ src/main/java/com/veljko/airline_ops/
 
 ## Planned Next Steps
 
-* Add Swagger / OpenAPI documentation
-* Add validation (`@NotBlank`, `@Positive`, etc.)
-* Add Airport → Flight relationship (origin/destination as entities)
 * Add basic CI pipeline (GitHub Actions)
 * Optional: Dockerfile
 

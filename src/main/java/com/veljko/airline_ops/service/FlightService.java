@@ -2,9 +2,11 @@ package com.veljko.airline_ops.service;
 
 import com.veljko.airline_ops.dto.CreateFlightRequest;
 import com.veljko.airline_ops.model.Aircraft;
+import com.veljko.airline_ops.model.Airport;
 import com.veljko.airline_ops.model.Flight;
 import com.veljko.airline_ops.model.FlightStatus;
 import com.veljko.airline_ops.repository.AircraftRepository;
+import com.veljko.airline_ops.repository.AirportRepository;
 import com.veljko.airline_ops.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,10 +21,12 @@ public class FlightService {
 
     private final AircraftRepository aircraftRepository;
     private final FlightRepository flightRepository;
+    private final AirportRepository airportRepository;
 
-    public FlightService(FlightRepository flightRepository, AircraftRepository aircraftRepository) {
+    public FlightService(FlightRepository flightRepository, AircraftRepository aircraftRepository, AirportRepository airportRepository) {
         this.flightRepository = flightRepository;
         this.aircraftRepository = aircraftRepository;
+        this.airportRepository = airportRepository;
     }
 
     public List<Flight> getAllFlights() {
@@ -38,10 +42,27 @@ public class FlightService {
             throw new ResponseStatusException(BAD_REQUEST, "Aircraft with id " + request.getAircraftId() + " not found");
         }
 
+        Airport originAirport = airportRepository.findById(request.getOriginAirportId()).orElse(null);
+        if (originAirport == null) {
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Origin airport with id " + request.getOriginAirportId() + " not found"
+            );
+        }
+
+        Airport destinationAirport = airportRepository.findById(request.getDestinationAirportId()).orElse(null);
+        if (destinationAirport == null) {
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Destination airport with id " + request.getDestinationAirportId() + " not found"
+            );
+        }
+
+
         Flight flight = new Flight();
         flight.setFlightNumber(request.getFlightNumber());
-        flight.setOrigin(request.getOrigin());
-        flight.setDestination(request.getDestination());
+        flight.setOriginAirport(originAirport);
+        flight.setDestinationAirport(destinationAirport);
         flight.setScheduledDeparture(request.getScheduledDeparture());
         flight.setScheduledArrival(request.getScheduledArrival());
 
@@ -127,12 +148,12 @@ public class FlightService {
         return flightRepository.findByStatus(status);
     }
 
-    public List<Flight> getFlightsByOrigin(String origin) {
-        return flightRepository.findByOriginIgnoreCase(origin);
+    public List<Flight> getFlightsByOrigin(String originCode) {
+        return flightRepository.findByOriginAirport_Code(originCode);
     }
 
-    public List<Flight> getFlightsByDestination(String destination) {
-        return flightRepository.findByDestinationIgnoreCase(destination);
+    public List<Flight> getFlightsByDestination(String destinationCode) {
+        return flightRepository.findByDestinationAirport_Code(destinationCode);
     }
 
     public List<Flight> getFlightsByAircraft(Long id){

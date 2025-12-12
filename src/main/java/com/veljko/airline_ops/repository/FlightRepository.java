@@ -12,9 +12,9 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     List<Flight> findByStatus(FlightStatus status);
 
-    List<Flight> findByOriginIgnoreCase(String origin);
+    List<Flight> findByOriginAirport_Code(String code);
 
-    List<Flight> findByDestinationIgnoreCase(String destination);
+    List<Flight> findByDestinationAirport_Code(String code);
 
     List<Flight> findByAircraftId(Long aircraftId);
 
