@@ -4,6 +4,7 @@ import com.veljko.airline_ops.dto.CreateAircraftRequest;
 import com.veljko.airline_ops.model.Aircraft;
 import com.veljko.airline_ops.service.AircraftService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +32,11 @@ public class AircraftController {
     @GetMapping("/{id}")
     public Aircraft getAircraftById(@PathVariable Long id) {
         return aircraftService.getAircraftById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAircraft(@PathVariable Long id) {
+        aircraftService.deleteAircraft(id);
     }
 }

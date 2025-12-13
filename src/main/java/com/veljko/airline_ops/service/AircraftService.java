@@ -3,6 +3,7 @@ package com.veljko.airline_ops.service;
 import com.veljko.airline_ops.dto.CreateAircraftRequest;
 import com.veljko.airline_ops.model.Aircraft;
 import com.veljko.airline_ops.repository.AircraftRepository;
+import com.veljko.airline_ops.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,9 +16,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class AircraftService {
 
     private final AircraftRepository aircraftRepository;
+    private final FlightRepository flightRepository;
 
-    public AircraftService(AircraftRepository aircraftRepository) {
+    public AircraftService(AircraftRepository aircraftRepository, FlightRepository flightRepository) {
         this.aircraftRepository = aircraftRepository;
+        this.flightRepository = flightRepository;
     }
 
     public List<Aircraft> getAllAircraft() {
@@ -57,5 +60,18 @@ public class AircraftService {
         }
 
         return aircraft;
+    }
+
+    public void deleteAircraft(Long id) {
+        Aircraft aircraft = getAircraftById(id);
+
+        if (flightRepository.existsByAircraft_Id(id)) {
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Cannot delete aircraft " + aircraft.getRegistration() + " because it is assigned to one or more flights"
+            );
+        }
+
+        aircraftRepository.delete(aircraft);
     }
 }
