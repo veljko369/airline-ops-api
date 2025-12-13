@@ -1,45 +1,24 @@
-package com.veljko.airline_ops.model;
+package com.veljko.airline_ops.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "airports")
-public class Airport {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CreateAirportRequest {
 
     @NotBlank(message = "Airport code is required")
-    @Column(nullable = false, unique = true, length = 3)
-    //IATA codes
+    @Size(min = 3, max = 3, message = "Airport code must be exactly 3 characters")
     private String code;
 
     @NotBlank(message = "Airport name is required")
-    @Column(nullable = false)
     private String name;
 
     @NotBlank(message = "City is required")
-    @Column(nullable = false)
     private String city;
 
     @NotBlank(message = "Country is required")
-    @Column(nullable = false)
     private String country;
 
-    protected Airport() {
-    }
-
     //getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getCode() {
         return code;
     }

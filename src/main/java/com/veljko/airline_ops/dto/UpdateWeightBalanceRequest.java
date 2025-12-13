@@ -13,9 +13,7 @@ public class UpdateWeightBalanceRequest {
     @PositiveOrZero(message = "Fuel must be >= 0")
     private Integer fuelKg;
 
-    public UpdateWeightBalanceRequest(){
-    }
-
+    //getters and setters
     public Integer getPlannedPayloadKg() {
         return plannedPayloadKg;
     }
@@ -39,12 +37,4 @@ public class UpdateWeightBalanceRequest {
     public void setFuelKg(Integer fuelKg) {
         this.fuelKg = fuelKg;
     }
-
-
-
-
-
-
-
-
 }

@@ -4,12 +4,11 @@ import com.veljko.airline_ops.model.FlightStatus;
 import jakarta.validation.constraints.NotNull;
 
 public class UpdateFlightStatusRequest {
+
     @NotNull(message = "Status is required")
     private FlightStatus status;
 
-    public UpdateFlightStatusRequest() {
-    }
-
+    //getters and setters
     public FlightStatus getStatus() {
         return status;
     }

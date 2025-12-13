@@ -1,6 +1,9 @@
 package com.veljko.airline_ops.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDateTime;
 
@@ -12,36 +15,55 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Flight number is required")
+    @Column(nullable = false)
     private String flightNumber;
 
+    @NotNull(message = "Scheduled departure is required")
+    @Column(nullable = false)
     private LocalDateTime scheduledDeparture;
+
+    @NotNull(message = "Scheduled arrival is required")
+    @Column(nullable = false)
     private LocalDateTime scheduledArrival;
 
+    @NotNull(message = "Status is required")
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private FlightStatus status;
 
+    @Column(length = 10)
     private String gate;
 
+    @NotNull(message = "Aircraft is required")
     @ManyToOne
-    @JoinColumn(name = "aircraft_id")
+    @JoinColumn(name = "aircraft_id", nullable = false)
     private Aircraft aircraft;
 
+    @NotNull(message = "Origin airport is required")
     @ManyToOne
-    @JoinColumn(name = "origin_airport_id")
+    @JoinColumn(name = "origin_airport_id", nullable = false)
     private Airport originAirport;
 
+    @NotNull(message = "Destination airport is required")
     @ManyToOne
-    @JoinColumn(name = "destination_airport_id")
+    @JoinColumn(name = "destination_airport_id", nullable = false)
     private Airport destinationAirport;
 
     //weight and balance
+    @PositiveOrZero(message = "Planned payload must be >= 0")
     private Integer plannedPayloadKg;
+
+    @PositiveOrZero(message = "Actual payload must be >= 0")
     private Integer actualPayloadKg;
+
+    @PositiveOrZero(message = "Fuel must be >= 0")
     private Integer fuelKg;
 
     public Flight() {
     }
 
+    //getters and setters
     public Long getId() {
         return id;
     }

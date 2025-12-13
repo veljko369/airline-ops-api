@@ -4,6 +4,7 @@ import com.veljko.airline_ops.model.FlightStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -36,16 +37,13 @@ public class CreateFlightRequest {
     @PositiveOrZero(message = "Fuel amount must be >= 0")
     private Integer fuelKg;
 
+    //default in service
     private FlightStatus status;
 
+    @Size(max = 10, message = "Gate must be at most 10 characters")
     private String gate;
 
-
-    public CreateFlightRequest(){
-
-    }
-
-
+    //getters and setters
     public String getFlightNumber() {
         return flightNumber;
     }
@@ -86,22 +84,6 @@ public class CreateFlightRequest {
         this.scheduledArrival = scheduledArrival;
     }
 
-    public FlightStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(FlightStatus status) {
-        this.status = status;
-    }
-
-    public String getGate() {
-        return gate;
-    }
-
-    public void setGate(String gate) {
-        this.gate = gate;
-    }
-
     public Long getAircraftId() {
         return aircraftId;
     }
@@ -132,5 +114,21 @@ public class CreateFlightRequest {
 
     public void setFuelKg(Integer fuelKg) {
         this.fuelKg = fuelKg;
+    }
+
+    public FlightStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(FlightStatus status) {
+        this.status = status;
+    }
+
+    public String getGate() {
+        return gate;
+    }
+
+    public void setGate(String gate) {
+        this.gate = gate;
     }
 }
