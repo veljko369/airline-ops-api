@@ -8,6 +8,7 @@ import com.veljko.airline_ops.model.Flight;
 import com.veljko.airline_ops.model.FlightStatus;
 import com.veljko.airline_ops.service.FlightService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,35 +28,37 @@ public class FlightController {
         return flightService.getAllFlights();
     }
 
+    @GetMapping("/{id}")
+    public Flight getFlightById(@PathVariable Long id) {
+        return flightService.getFlightById(id);
+    }
+
     @PostMapping
     public Flight createFlight(@Valid @RequestBody CreateFlightRequest request) {
         return flightService.createFlight(request);
     }
 
-    @PostMapping("/{id}/status")
+    @PatchMapping("/{id}/status")
     public Flight updateFlightStatus(@PathVariable Long id,
                                      @Valid @RequestBody UpdateFlightStatusRequest request) {
-        FlightStatus newStatus = request.getStatus();
-        return flightService.updateStatus(id, newStatus);
+        return flightService.updateStatus(id, request.getStatus());
     }
 
-    @PostMapping("/{id}/gate")
+    @PatchMapping("/{id}/gate")
     public Flight updateFlightGate(@PathVariable Long id,
                                    @Valid @RequestBody UpdateGateRequest request) {
-        String newGate = request.getGate();
-        return flightService.updateGate(id, newGate);
+        return flightService.updateGate(id, request.getGate());
     }
 
-    @PostMapping("/{id}/weight-balance")
+    @PatchMapping("/{id}/weight-balance")
     public Flight updateWeightBalance(@PathVariable Long id,
                                       @Valid @RequestBody UpdateWeightBalanceRequest request) {
-        Integer newPlannedPayloadKg = request.getPlannedPayloadKg();
-        Integer newActualPayloadKg = request.getActualPayloadKg();
-        Integer newFuelKg = request.getFuelKg();
-
-        return flightService.updateWeightBalance(id, newPlannedPayloadKg, newActualPayloadKg, newFuelKg);
-
-
+        return flightService.updateWeightBalance(
+                id,
+                request.getPlannedPayloadKg(),
+                request.getActualPayloadKg(),
+                request.getFuelKg()
+        );
     }
 
     @GetMapping("/status/{status}")
@@ -78,5 +81,9 @@ public class FlightController {
         return flightService.getFlightsByAircraft(aircraftId);
     }
 
-
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFlight(@PathVariable Long id) {
+        flightService.deleteFlight(id);
+    }
 }

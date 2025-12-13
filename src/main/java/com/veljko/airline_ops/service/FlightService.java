@@ -33,13 +33,23 @@ public class FlightService {
         return flightRepository.findAll();
     }
 
-
     public Flight createFlight(CreateFlightRequest request) {
+
+        if (request.getScheduledArrival().isBefore(request.getScheduledDeparture()) ||
+                request.getScheduledArrival().isEqual(request.getScheduledDeparture())) {
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Scheduled arrival must be after scheduled departure"
+            );
+        }
 
         Aircraft aircraft = aircraftRepository.findById(request.getAircraftId()).orElse(null);
 
         if (aircraft == null) {
-            throw new ResponseStatusException(BAD_REQUEST, "Aircraft with id " + request.getAircraftId() + " not found");
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Aircraft with id " + request.getAircraftId() + " not found"
+            );
         }
 
         Airport originAirport = airportRepository.findById(request.getOriginAirportId()).orElse(null);
@@ -58,11 +68,14 @@ public class FlightService {
             );
         }
 
-
         Flight flight = new Flight();
-        flight.setFlightNumber(request.getFlightNumber());
+
+        String normalizedFlightNumber = request.getFlightNumber().trim().toUpperCase();
+        flight.setFlightNumber(normalizedFlightNumber);
+
         flight.setOriginAirport(originAirport);
         flight.setDestinationAirport(destinationAirport);
+
         flight.setScheduledDeparture(request.getScheduledDeparture());
         flight.setScheduledArrival(request.getScheduledArrival());
 
@@ -72,16 +85,19 @@ public class FlightService {
             flight.setStatus(request.getStatus());
         }
 
-        flight.setGate(request.getGate());
+        if (request.getGate() != null) {
+            String trimmedGate = request.getGate().trim();
+            flight.setGate(trimmedGate.isBlank() ? null : trimmedGate);
+        }
+
         flight.setAircraft(aircraft);
+
         flight.setPlannedPayloadKg(request.getPlannedPayloadKg());
         flight.setActualPayloadKg(request.getActualPayloadKg());
         flight.setFuelKg(request.getFuelKg());
 
         return flightRepository.save(flight);
-
     }
-
 
     public Flight getFlightById(Long id) {
         Flight flight = flightRepository.findById(id).orElse(null);
@@ -103,11 +119,13 @@ public class FlightService {
     }
 
     public Flight updateGate(Long id, String newGate) {
-
         Flight flight = getFlightById(id);
 
         if (newGate == null || newGate.isBlank()) {
-            throw new ResponseStatusException(BAD_REQUEST, "Gate must not be empty");
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Gate must not be empty"
+            );
         }
 
         flight.setGate(newGate.trim());
@@ -115,9 +133,19 @@ public class FlightService {
     }
 
 
-    public Flight updateWeightBalance(Long id, Integer newPlannedPayloadKg, Integer newActualPayloadKg, Integer newFuelKg) {
+    public Flight updateWeightBalance(Long id,
+                                      Integer newPlannedPayloadKg,
+                                      Integer newActualPayloadKg,
+                                      Integer newFuelKg) {
 
         Flight flight = getFlightById(id);
+
+        if (newPlannedPayloadKg == null && newActualPayloadKg == null && newFuelKg == null) {
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "At least one weight or fuel value must be provided"
+            );
+        }
 
         boolean invalidPlanned = newPlannedPayloadKg != null && newPlannedPayloadKg < 0;
         boolean invalidActual = newActualPayloadKg != null && newActualPayloadKg < 0;
@@ -156,8 +184,12 @@ public class FlightService {
         return flightRepository.findByDestinationAirport_Code(destinationCode);
     }
 
-    public List<Flight> getFlightsByAircraft(Long id){
+    public List<Flight> getFlightsByAircraft(Long id) {
         return flightRepository.findByAircraftId(id);
     }
 
+    public void deleteFlight(Long id) {
+        Flight flight = getFlightById(id);
+        flightRepository.delete(flight);
+    }
 }
