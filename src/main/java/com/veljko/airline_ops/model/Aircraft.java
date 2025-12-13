@@ -35,7 +35,7 @@ public class Aircraft {
     @Column(nullable = false)
     private Integer maxTakeoffWeightKg;
 
-    protected Aircraft() {
+    public Aircraft() {
     }
 
     //getters and setters

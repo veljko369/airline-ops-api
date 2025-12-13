@@ -1,5 +1,6 @@
 package com.veljko.airline_ops.controller;
 
+import com.veljko.airline_ops.dto.CreateAirportRequest;
 import com.veljko.airline_ops.model.Airport;
 import com.veljko.airline_ops.service.AirportService;
 import jakarta.validation.Valid;
@@ -23,8 +24,8 @@ public class AirportController {
     }
 
     @PostMapping
-    public Airport createAirport(@Valid @RequestBody Airport airport){
-        return airportService.createAirport(airport);
+    public Airport createAirport(@Valid @RequestBody CreateAirportRequest request){
+        return airportService.createAirport(request);
     }
 
     @GetMapping("/{id}")

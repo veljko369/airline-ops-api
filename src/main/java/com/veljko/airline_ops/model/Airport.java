@@ -28,7 +28,7 @@ public class Airport {
     @Column(nullable = false)
     private String country;
 
-    protected Airport() {
+    public Airport() {
     }
 
     //getters and setters
