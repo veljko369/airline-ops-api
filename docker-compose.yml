@@ -11,5 +11,17 @@ services:
     volumes:
       - airline_ops_pgdata:/var/lib/postgresql/data
 
+  app:
+    build: .
+    container_name: airline_ops_app
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/airline_ops
+      DB_USER: postgres
+      DB_PASS: postgres
+
 volumes:
   airline_ops_pgdata:
