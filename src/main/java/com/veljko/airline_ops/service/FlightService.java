@@ -185,7 +185,7 @@ public class FlightService {
     }
 
     public List<Flight> getFlightsByAircraft(Long id) {
-        return flightRepository.findByAircraftId(id);
+        return flightRepository.findByAircraft_Id(id);
     }
 
     public void deleteFlight(Long id) {
