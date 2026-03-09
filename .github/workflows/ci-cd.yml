@@ -48,7 +48,7 @@ jobs:
           DB_URL: jdbc:postgresql://localhost:5432/airline_ops
           DB_USER: postgres
           DB_PASS: postgres
-        run: mvn -B ntp clean test
+        run: mvn -B -ntp clean test
 
       - name: Log in to GHCR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
